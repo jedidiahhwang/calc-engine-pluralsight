@@ -6,31 +6,28 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-    	double[] leftVals = {100.0d, 25.0d, 225.0d, 11.0d};
-    	double[] rightVals = {50.0d, 92.0d, 17.0d, 3.0d};
-    	char[] opCodes = {'d', 'a', 's', 'm'};
-
-    	// These are parallel arrays, meaning each array value has a corresponding value from another array.
-    	double[] results = new double[opCodes.length];
-
-    	if(args.length == 0) {
-			for(int i = 0; i < opCodes.length; i++) {
-				results[i] = execute(opCodes[i], leftVals[i], rightVals[i]);
-			}
-			for(double currentResult: results) {
-				System.out.println(currentResult);
-			}
-    	} else if(args.length == 1 && args[0].equals("interactive")) {
-    		executeInteractively();
-		} else if(args.length == 3) {
-    		handleCommandLine(args);
-		} else {
-    		System.out.println("Please provide an operation code and 2 numeric values");
-		}
-
+ 		performCalculations();
     }
 
+    static void performCalculations() {
+    	// Currently takes in hard-coded values and does the calculation
+		double[] leftVals = {100.0d, 25.0d, 225.0d, 11.0d};
+		double[] rightVals = {50.0d, 92.0d, 17.0d, 3.0d};
+		char[] opCodes = {'d', 'a', 's', 'm'};
+
+		// These are parallel arrays, meaning each array value has a corresponding value from another array.
+		double[] results = new double[opCodes.length];
+
+		for(int i = 0; i < opCodes.length; i++) {
+			results[i] = execute(opCodes[i], leftVals[i], rightVals[i]);
+		}
+		for(double currentResult: results) {
+			System.out.println("result = " + currentResult);
+		}
+	}
+
     static void executeInteractively() {
+    	// Takes input from command line
     	System.out.println("Enter an operation and two numbers:");
 		Scanner scanner = new Scanner(System.in);
 		String userInput = scanner.nextLine();
@@ -39,6 +36,7 @@ public class Main {
 	}
 
 	private static void performOperation(String[] parts) {
+    	// Takes in string arguments and handled date/time values as well as regular values
 		char opCode = opCodeFromString(parts[0]);
 
 		if(opCode == 'w') {
@@ -52,6 +50,7 @@ public class Main {
 	}
 
 	private static void handleWhen(String[] parts) {
+    	// For handling addition of time
 		LocalDate startDate = LocalDate.parse(parts[1]); // parse will change that string into a date format
 		long daysToAdd = (long) valueFromWord(parts[2]);
 		LocalDate newDate = startDate.plusDays(daysToAdd);
@@ -60,6 +59,7 @@ public class Main {
 	}
 
 	private static void displayResult(char opCode, double leftVal, double rightVal, double result) {
+    	// Shows the text using StringBuilder and String.format
 		char symbol = symbolFromOpCode(opCode);
 //		StringBuilder builder = new StringBuilder(20);
 //		builder.append(leftVal);
@@ -76,6 +76,7 @@ public class Main {
 	}
 
 	private static char symbolFromOpCode(char opCode) {
+    	// Uses an array to store opCode values, correlates them with a parallel array
     	char[] opCodes = {'a', 's', 'm', 'd'};
     	char[] symbols = {'+', '-', '*', '/'};
     	char symbol = ' ';
@@ -89,6 +90,7 @@ public class Main {
 	}
 
 	private static void handleCommandLine(String[] args) {
+    	// Takes in command line input and parses/executes them accordingly
 		char opCode = args[0].charAt(0); // Converts string to char
 		double leftVal = Double.parseDouble(args[1]); // Converts a sequence of characters into a double
 		double rightVal = Double.parseDouble(args[2]);
@@ -97,6 +99,7 @@ public class Main {
 	}
 
 	static double execute(char opCode, double leftVal, double rightVal) {
+    	// Does the calculating, exported into a class
     	double result;
 		switch(opCode) {
 			case 'a':
@@ -127,11 +130,13 @@ public class Main {
 	}
 
 	static char opCodeFromString(String operationName) {
+    	// Grabs the single character opCode (first char)
     	char opCode = operationName.charAt(0);
     	return opCode;
 	}
 
 	static double valueFromWord(String word) {
+    	// Converts text to numbers using array indexes, or uses Double wrapper to process numbers
     	String[] numberWords = {
     			"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"
 		};
