@@ -6,9 +6,12 @@ public class MathEquation {
     double result;
     char opCode;
 
-    public MathEquation() {
+    // Calculate average result using static methodology
+    // To reiterate, these are private (inaccessible outside of the class) and static (same value for the whole class)
+    private static int numberOfCalculations;
+    private static double sumOfResults;
 
-    }
+    public MathEquation() {}
 
     public MathEquation(char opCode) {
         this.opCode = opCode;
@@ -17,7 +20,7 @@ public class MathEquation {
     public MathEquation(char opCode, double leftVal, double rightVal) {
         this(opCode);
         this.leftVal = leftVal;
-
+//        this.rightVal = rightVal;
     }
 
     void execute() {
@@ -46,6 +49,14 @@ public class MathEquation {
                 result = 0.0d;
                 break;
         }
+
+        // Calculations to find the average amount of the calculations
+        numberOfCalculations++;
+        sumOfResults += result;
+    }
+
+    public static double getAverageResult() {
+        return sumOfResults / numberOfCalculations;
     }
 
     public double setLeftVal(double leftVal) {

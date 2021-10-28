@@ -21,6 +21,8 @@ public class Main {
 			equation.execute(); // This is calling the execute() method made in MathEquation class
 			System.out.println("result = " + equation.result);
 		}
+
+		System.out.println("Average result = " + MathEquation.getAverageResult());
 	}
 
 	static void executeInteractively() {
