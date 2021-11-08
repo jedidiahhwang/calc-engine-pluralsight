@@ -8,6 +8,7 @@ public class Main {
     public static void main(String[] args) {
 // 		performCalculations();
 
+
 		// Uses the divider calculate() method instead
  		Divider divider = new Divider();
  		doCalculation(divider, 100.0d, 50.0d);
@@ -15,9 +16,48 @@ public class Main {
  		// Uses the adder calculate() method instead
  		Adder adder = new Adder();
  		doCalculation(adder, 25.0d, 92.0d);
+
+// 		performMoreCalculations();
+ 		executeInteractively();
     }
 
-    static void doCalculation(CalculateBase calculation, double leftVal, double rightVal) {
+    private static CalculateBase createCalculation(MathOperation operation, double leftVal, double rightVal) {
+    	CalculateBase calculation = null;
+    	switch(operation) {
+			case ADD:
+				calculation = new Adder(leftVal, rightVal);
+				break;
+			case SUBTRACT:
+				calculation = new Subtracter(leftVal, rightVal);
+				break;
+			case MULTIPLY:
+				calculation = new Multiplier(leftVal, rightVal);
+				break;
+			case DIVIDE:
+				calculation = new Divider(leftVal, rightVal);
+				break;
+		}
+		return calculation;
+	}
+
+	private static void performMoreCalculations() {
+		CalculateBase[] calculations = {
+			new Divider(100.0d, 50.0d),
+			new Adder(25.0d, 92.0d),
+			new Subtracter(225.0d, 17.0d),
+			new Multiplier(11.0d, 3.0d)
+		};
+
+		System.out.println();
+		System.out.println("Array Calculations");
+
+		for(CalculateBase calculation : calculations) {
+			calculation.calculate();
+			System.out.println("result = " + calculation.getResult());
+		}
+	}
+
+	static void doCalculation(CalculateBase calculation, double leftVal, double rightVal) {
     	calculation.setLeftVal(leftVal);
     	calculation.setRightVal(rightVal);
     	calculation.calculate(); // Even though CalculateBase calculate() is empty, @Override will pick the extended class
@@ -66,17 +106,14 @@ public class Main {
 	}
 
 	private static void performOperation(String[] parts) {
-    	// Takes in string arguments and handled date/time values as well as regular values
-		char opCode = opCodeFromString(parts[0]);
+    	MathOperation operation = MathOperation.valueOf(parts[0].toUpperCase());
+    	double leftVal = Double.parseDouble(parts[1]);
+    	double rightVal = Double.parseDouble(parts[2]);
+    	CalculateBase calculation = createCalculation(operation, leftVal, rightVal);
+    	calculation.calculate();
 
-		if(opCode == 'w') {
-			handleWhen(parts);
-		} else {
-			double leftVal = valueFromWord(parts[1]);
-			double rightVal = valueFromWord(parts[2]);
-			double result = execute(opCode, leftVal, rightVal);
-			displayResult(opCode, leftVal, rightVal, result);
-		}
+    	System.out.println("Operation performed: " + operation);
+    	System.out.println(calculation.getResult());
 	}
 
 	private static void handleWhen(String[] parts) {

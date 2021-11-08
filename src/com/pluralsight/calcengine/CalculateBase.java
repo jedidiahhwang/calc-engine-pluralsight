@@ -1,9 +1,16 @@
 package com.pluralsight.calcengine;
 
-public class CalculateBase {
+public abstract class CalculateBase {
     private double leftVal;
     private double rightVal;
     private double result;
+
+    public CalculateBase() {}
+
+    public CalculateBase(double leftVal, double rightVal) {
+        this.leftVal = leftVal;
+        this.rightVal = rightVal;
+    }
 
     // Because our fields are private, we need to make getters and setters again
     public double getLeftVal() {
@@ -27,7 +34,5 @@ public class CalculateBase {
         this.result = result;
     }
 
-    public void calculate() {
-
-    }
+    public abstract void calculate() ;
 }
